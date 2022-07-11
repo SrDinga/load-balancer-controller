@@ -11,7 +11,7 @@ COPY go.sum go.sum
 
 
   
-RUN --mount=type=cache,target=/path \
+RUN --mount=type=bind,target=/path ls /path \
     --mount=type=cache,target=/root/.cache/go-build \
     GOPROXY=direct go mod download
 
@@ -19,7 +19,7 @@ FROM base AS build
 ARG TARGETOS=linux
 ARG TARGETARCH=amd64
 ENV VERSION_PKG=sigs.k8s.io/aws-load-balancer-controller/pkg/version
-RUN --mount=type=cache,target=/path \
+RUN --mount=type=bind,target=/path ls /path \
 RUN --mount=type=cache,target=/root/.cache/go-build \
     GIT_VERSION=$(git describe --tags --dirty --always) && \
     GIT_COMMIT=$(git rev-parse HEAD) && \
