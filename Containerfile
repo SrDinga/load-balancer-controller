@@ -7,9 +7,9 @@ COPY go.mod go.mod
 COPY go.sum go.sum
 # cache deps before building and copying source so that we don't need to re-download as much
 # and so that source changes don't invalidate our downloaded layer
-RUN --mount=target=. \
-    --mount=type=cache,target=/root/.cache/go-build \
+RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg \
+    # --mount=type=cache,target=/go/pkg \
 
 FROM base AS build
 ARG TARGETOS=linux
@@ -31,6 +31,6 @@ COPY --from=build /out/controller /controller
 ENTRYPOINT ["/controller"]
 
 FROM bin-unix AS bin-linux
-FROM bin-unix AS bin-darwin
+# FROM bin-unix AS bin-darwin
 
 FROM bin-${TARGETOS} as bin
